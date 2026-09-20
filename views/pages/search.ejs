@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+  <h1>Search blood by group</h1>
+  <p>See current units in the bank. Low-stock groups are highlighted.</p>
+</section>
+
+<form class="filter-bar" method="GET" action="/search">
+  <label>
+    Blood group
+    <select name="group">
+      <option value="">All groups</option>
+      <% bloodGroups.forEach(function(g) { %>
+      <option value="<%= g %>" <%= selected === g ? 'selected' : '' %>><%= g %></option>
+      <% }) %>
+    </select>
+  </label>
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+<div class="stock-grid">
+  <% if (!stock.length) { %>
+  <p class="empty">No inventory records found. Run <code>npm run seed</code> after connecting Atlas.</p>
+  <% } %>
+  <% stock.forEach(function(item) { %>
+  <article class="stock-card <%= item.units <= item.lowStockThreshold ? 'is-low' : '' %>">
+    <h2><%= item.bloodGroup %></h2>
+    <p class="units"><%= item.units %> <span>units</span></p>
+    <% if (item.units <= item.lowStockThreshold) { %>
+    <p class="badge badge-warn">Low stock</p>
+    <% } else { %>
+    <p class="badge badge-ok">Available</p>
+    <% } %>
+    <a class="text-link" href="/requests/new?group=<%= encodeURIComponent(item.bloodGroup) %>">Request this group</a>
+  </article>
+  <% }) %>
+</div>
+
+<%- include('../partials/footer') %>

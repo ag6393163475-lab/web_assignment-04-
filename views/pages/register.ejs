@@ -1,0 +1,71 @@
+<%- include('../partials/header') %>
+
+<section class="split">
+  <div>
+    <p class="eyebrow">Join the donor panel</p>
+    <h1>Register with blood group and last donation date</h1>
+    <p class="lede">
+      You must be 18–65. After a donation, LifeLine waits 90 days before you are marked eligible again.
+    </p>
+  </div>
+  <form class="card form" method="POST" action="/auth/register">
+    <label>
+      Full name
+      <input name="name" required />
+    </label>
+    <label>
+      Email
+      <input type="email" name="email" required />
+    </label>
+    <div class="form-row">
+      <label>
+        Password
+        <input type="password" name="password" minlength="6" required />
+      </label>
+      <label>
+        Phone
+        <input name="phone" />
+      </label>
+    </div>
+    <div class="form-row">
+      <label>
+        Blood group
+        <select name="bloodGroup" required>
+          <% bloodGroups.forEach(function(g) { %>
+          <option value="<%= g %>"><%= g %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>
+        Last donation date
+        <input type="date" name="lastDonationDate" />
+      </label>
+    </div>
+    <div class="form-row">
+      <label>
+        Age
+        <input type="number" name="age" min="18" max="65" required />
+      </label>
+      <label>
+        Gender
+        <select name="gender" required>
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+    </div>
+    <label>
+      City
+      <input name="city" required />
+    </label>
+    <label>
+      Address
+      <textarea name="address" rows="2"></textarea>
+    </label>
+    <button class="btn btn-primary" type="submit">Create donor account</button>
+    <p class="muted">Already registered? <a href="/auth/login">Sign in</a></p>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>

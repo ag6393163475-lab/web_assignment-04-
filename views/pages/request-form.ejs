@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<section class="split">
+  <div>
+    <p class="eyebrow">Emergency desk</p>
+    <h1>Request blood</h1>
+    <p class="lede">Use this form for hospital or family emergencies. Status starts at Pending until the bank processes it.</p>
+  </div>
+  <form class="card form" method="POST" action="/requests">
+    <label>
+      Requester name
+      <input name="requesterName" required value="<%= user ? user.name : '' %>" />
+    </label>
+    <label>
+      Phone
+      <input name="phone" required />
+    </label>
+    <label>
+      Hospital / clinic
+      <input name="hospital" required />
+    </label>
+    <label>
+      City
+      <input name="city" required />
+    </label>
+    <div class="form-row">
+      <label>
+        Blood group
+        <select name="bloodGroup" required>
+          <% bloodGroups.forEach(function(g) { %>
+          <option value="<%= g %>" <%= selectedGroup === g ? 'selected' : '' %>><%= g %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>
+        Units needed
+        <input type="number" name="unitsNeeded" min="1" max="20" value="1" required />
+      </label>
+    </div>
+    <label>
+      Urgency
+      <select name="urgency">
+        <option value="Emergency" selected>Emergency</option>
+        <option value="Normal">Normal</option>
+      </select>
+    </label>
+    <label>
+      Notes
+      <textarea name="notes" rows="3" placeholder="Patient details, ward, time needed…"></textarea>
+    </label>
+    <button class="btn btn-primary" type="submit">Submit request</button>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>

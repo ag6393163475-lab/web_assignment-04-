@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+  <h1>Blood bank dashboard</h1>
+  <p>Units by group, active requests, and low-stock alerts.</p>
+</section>
+
+<div class="stat-row">
+  <article class="stat-tile">
+    <p>Total units</p>
+    <strong><%= totalUnits %></strong>
+  </article>
+  <article class="stat-tile">
+    <p>Registered donors</p>
+    <strong><%= donorCount %></strong>
+  </article>
+  <article class="stat-tile">
+    <p>Active requests</p>
+    <strong><%= activeRequests %></strong>
+  </article>
+  <article class="stat-tile warn">
+    <p>Low-stock groups</p>
+    <strong><%= lowStock.length %></strong>
+  </article>
+</div>
+
+<div class="grid-2">
+  <article class="card">
+    <h2>Units by blood group</h2>
+    <div class="bars">
+      <% const max = Math.max.apply(null, stock.map(function(s){ return s.units; }).concat([1])); %>
+      <% stock.forEach(function(item) { %>
+      <div class="bar-row <%= item.units <= item.lowStockThreshold ? 'low' : '' %>">
+        <span><%= item.bloodGroup %></span>
+        <div class="bar"><i style="width: <%= Math.round((item.units / max) * 100) %>%"></i></div>
+        <strong><%= item.units %></strong>
+      </div>
+      <% }) %>
+    </div>
+  </article>
+  <article class="card">
+    <h2>Low stock</h2>
+    <% if (!lowStock.length) { %>
+    <p class="muted">All groups are above threshold.</p>
+    <% } else { %>
+    <ul class="plain-list">
+      <% lowStock.forEach(function(item) { %>
+      <li><strong><%= item.bloodGroup %></strong> — <%= item.units %> units (threshold <%= item.lowStockThreshold %>)</li>
+      <% }) %>
+    </ul>
+    <% } %>
+    <h2 class="section-title">Recent requests</h2>
+    <ul class="plain-list">
+      <% recentRequests.forEach(function(r) { %>
+      <li>
+        <span class="status status-<%= r.status.toLowerCase() %>"><%= r.status %></span>
+        <%= r.bloodGroup %> × <%= r.unitsNeeded %> · <%= r.hospital %>
+      </li>
+      <% }) %>
+    </ul>
+  </article>
+</div>
+
+<%- include('../partials/footer') %>

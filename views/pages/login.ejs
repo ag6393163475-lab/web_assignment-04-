@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+
+<section class="auth-wrap">
+  <form class="card form" method="POST" action="/auth/login">
+    <p class="eyebrow">Welcome back</p>
+    <h1>Sign in</h1>
+    <label>
+      Email
+      <input type="email" name="email" required />
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" required />
+    </label>
+    <button class="btn btn-primary" type="submit">Sign in</button>
+    <p class="muted">New donor? <a href="/auth/register">Create an account</a></p>
+    <p class="muted">Admin seed: <code>admin@bloodbank.com</code> / <code>Admin@123</code> after <code>npm run seed</code></p>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>

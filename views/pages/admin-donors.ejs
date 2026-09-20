@@ -1,0 +1,73 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+  <h1>Donor records</h1>
+  <p>Search, filter by group, record a donation, or remove a record.</p>
+</section>
+
+<form class="filter-bar" method="GET" action="/admin/donors">
+  <label>
+    Search
+    <input name="q" value="<%= q %>" placeholder="Name, email, city" />
+  </label>
+  <label>
+    Blood group
+    <select name="group">
+      <option value="">All</option>
+      <% bloodGroups.forEach(function(g) { %>
+      <option value="<%= g %>" <%= selected === g ? 'selected' : '' %>><%= g %></option>
+      <% }) %>
+    </select>
+  </label>
+  <button class="btn btn-primary" type="submit">Filter</button>
+</form>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Group</th>
+        <th>City</th>
+        <th>Last donation</th>
+        <th>Eligible</th>
+        <th>Units given</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% donors.forEach(function(d) { %>
+      <tr>
+        <td>
+          <strong><%= d.user ? d.user.name : '—' %></strong>
+          <div class="muted"><%= d.user ? d.user.email : '' %></div>
+        </td>
+        <td><%= d.bloodGroup %></td>
+        <td><%= d.city %></td>
+        <td><%= formatDate(d.lastDonationDate) %></td>
+        <td>
+          <% if (isEligible(d.lastDonationDate)) { %>
+          <span class="badge badge-ok">Yes</span>
+          <% } else { %>
+          <span class="badge badge-warn">Wait</span>
+          <% } %>
+        </td>
+        <td><%= d.donationCount %></td>
+        <td class="actions">
+          <form method="POST" action="/admin/donors/<%= d._id %>/donate">
+            <button class="btn btn-small" type="submit" <%= isEligible(d.lastDonationDate) ? '' : 'disabled' %>>Record donation</button>
+          </form>
+          <form method="POST" action="/admin/donors/<%= d._id %>?_method=DELETE" onsubmit="return confirm('Remove this donor?');">
+            <button class="btn btn-small btn-danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% if (!donors.length) { %>
+  <p class="empty">No donors match this filter.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

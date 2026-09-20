@@ -1,0 +1,75 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+  <h1>Hello, <%= donor.user.name %></h1>
+  <p>Blood group <strong><%= donor.bloodGroup %></strong> · <%= donor.city %></p>
+</section>
+
+<div class="grid-2">
+  <article class="card eligibility <%= eligible ? 'ok' : 'wait' %>">
+    <p class="eyebrow">Stretch goal · 90-day eligibility</p>
+    <% if (eligible) { %>
+    <h2>You are eligible to donate</h2>
+    <p>Last donation: <%= formatDate(donor.lastDonationDate) %>. Walk into the bank or wait for staff to record a unit.</p>
+    <% } else { %>
+    <h2>Not eligible yet</h2>
+    <p>Last donation: <%= formatDate(donor.lastDonationDate) %>. Next eligible on <%= nextEligibleOn %> (<%= daysUntilEligible %> days left).</p>
+    <% } %>
+    <p class="muted">Donations recorded: <%= donor.donationCount %></p>
+  </article>
+
+  <form class="card form" method="POST" action="/donor/profile">
+    <h2>Update profile</h2>
+    <label>
+      Phone
+      <input name="phone" value="<%= donor.user.phone || '' %>" />
+    </label>
+    <label>
+      City
+      <input name="city" value="<%= donor.city %>" required />
+    </label>
+    <label>
+      Address
+      <textarea name="address" rows="2"><%= donor.address || '' %></textarea>
+    </label>
+    <label>
+      Last donation date
+      <input type="date" name="lastDonationDate" value="<%= donor.lastDonationDate ? new Date(donor.lastDonationDate).toISOString().slice(0,10) : '' %>" />
+    </label>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </form>
+</div>
+
+<section>
+  <h2 class="section-title">Your requests</h2>
+  <% if (!myRequests.length) { %>
+  <p class="muted">No requests yet. <a href="/requests/new">Submit one</a>.</p>
+  <% } else { %>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Hospital</th>
+          <th>Group</th>
+          <th>Units</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% myRequests.forEach(function(r) { %>
+        <tr>
+          <td><%= r.hospital %></td>
+          <td><%= r.bloodGroup %></td>
+          <td><%= r.unitsNeeded %></td>
+          <td><span class="status status-<%= r.status.toLowerCase() %>"><%= r.status %></span></td>
+          <td><%= formatDate(r.createdAt) %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

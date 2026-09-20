@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+<section class="hero">
+  <div>
+    <p class="eyebrow">PS 4 · Healthcare / Social Good</p>
+    <h1>Connect donors with blood banks. Keep emergency stock visible.</h1>
+    <p class="lede">
+      Register as a donor, search units by blood group, and send emergency requests.
+      Admins track inventory, donor records, and request status from one desk.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/auth/register">Register as a donor</a>
+      <a class="btn btn-dark" href="/requests/new">Submit emergency request</a>
+    </div>
+  </div>
+  <aside class="hero-card">
+    <p class="stat-label">Units on hand</p>
+    <p class="stat-value"><%= stock.reduce((s, i) => s + i.units, 0) %></p>
+    <p class="stat-note"><%= emergencyCount %> emergency requests currently active</p>
+    <ul class="mini-stock">
+      <% stock.forEach(function(item) { %>
+      <li class="<%= item.units <= item.lowStockThreshold ? 'low' : '' %>">
+        <span><%= item.bloodGroup %></span>
+        <strong><%= item.units %></strong>
+      </li>
+      <% }) %>
+    </ul>
+  </aside>
+</section>
+
+<section class="grid-3">
+  <article class="card">
+    <h2>Donor registration</h2>
+    <p>Create a profile with blood group and last donation date. The 90-day eligibility check is automatic.</p>
+  </article>
+  <article class="card">
+    <h2>Live inventory</h2>
+    <p>Search available units by group. Low-stock groups are flagged for the blood bank team.</p>
+  </article>
+  <article class="card">
+    <h2>Request pipeline</h2>
+    <p>Hospitals submit requests. Admins move them Pending → Processing → Fulfilled, deducting stock on fulfill.</p>
+  </article>
+</section>
+
+<%- include('../partials/footer') %>

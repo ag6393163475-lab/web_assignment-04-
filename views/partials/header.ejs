@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> · LifeLine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>
+            <strong>LifeLine</strong>
+            <small>Blood Bank</small>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu">Menu</button>
+        <nav class="nav" id="site-nav">
+          <a href="/">Home</a>
+          <a href="/search">Search stock</a>
+          <a href="/requests/new">Emergency request</a>
+          <% if (user && user.role === 'admin') { %>
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/donors">Donors</a>
+          <a href="/admin/inventory">Inventory</a>
+          <a href="/admin/requests">Requests</a>
+          <% } else if (user) { %>
+          <a href="/donor/dashboard">My dashboard</a>
+          <% } %>
+        </nav>
+        <div class="header-actions">
+          <% if (user) { %>
+          <span class="who"><%= user.name %></span>
+          <form action="/auth/logout" method="POST">
+            <button class="btn btn-ghost" type="submit">Sign out</button>
+          </form>
+          <% } else { %>
+          <a class="btn btn-ghost" href="/auth/login">Sign in</a>
+          <a class="btn btn-primary" href="/auth/register">Become a donor</a>
+          <% } %>
+        </div>
+      </header>
+      <main class="site-main">
+        <% if (success && success.length) { %>
+        <div class="alert alert-success"><%= success[0] %></div>
+        <% } %>
+        <% if (error && error.length) { %>
+        <div class="alert alert-error"><%= error[0] %></div>
+        <% } %>

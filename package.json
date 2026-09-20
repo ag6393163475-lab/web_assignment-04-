@@ -1,0 +1,25 @@
+{
+  "name": "blood-bank-management",
+  "version": "1.0.0",
+  "description": "Blood Donation & Blood Bank Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node config/seed.js"
+  },
+  "keywords": ["blood-bank", "mongoose", "ejs", "express"],
+  "author": "Anshika Gupta",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.8.1"
+  }
+}

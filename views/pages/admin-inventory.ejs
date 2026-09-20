@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+
+<section class="page-head">
+  <h1>Inventory</h1>
+  <p>Adjust units and the low-stock threshold for each group.</p>
+</section>
+
+<div class="stock-grid">
+  <% stock.forEach(function(item) { %>
+  <form class="stock-card <%= item.units <= item.lowStockThreshold ? 'is-low' : '' %>" method="POST" action="/admin/inventory/<%= item._id %>?_method=PUT">
+    <h2><%= item.bloodGroup %></h2>
+    <label>
+      Units
+      <input type="number" name="units" min="0" value="<%= item.units %>" required />
+    </label>
+    <label>
+      Low-stock at
+      <input type="number" name="lowStockThreshold" min="0" value="<%= item.lowStockThreshold %>" required />
+    </label>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </form>
+  <% }) %>
+</div>
+
+<%- include('../partials/footer') %>
